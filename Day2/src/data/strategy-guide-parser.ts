@@ -1,8 +1,8 @@
-import { RPS, Strategy } from '../model/types';
+import { ExpectedOutcome, RPS, Strategy } from '../model/types';
 import StrategyGuide from './strategy-guide';
 
 export default class StrategyGuideParser {
-    private guide: StrategyGuide;
+    protected guide: StrategyGuide;
 
     constructor() {
         this.guide = new StrategyGuide();
@@ -12,7 +12,7 @@ export default class StrategyGuideParser {
         return this.guide;
     }
 
-    private static getChoice(character: string): RPS {
+    protected getChoice(character: string): RPS {
         switch (character) {
             case 'A':
             case 'X':
@@ -30,7 +30,22 @@ export default class StrategyGuideParser {
         throw 'Unexpected strategy file character';
     }
 
-    private parseStrategyText(strategyTextLine: string): void {
+    private static getExpectedOutcome(character: string): ExpectedOutcome {
+        switch (character) {
+            case 'X':
+                return ExpectedOutcome.YouLose;
+            
+            case 'Y':
+                return ExpectedOutcome.Draw;
+
+            case 'Z':
+                return ExpectedOutcome.YouWin;
+        }
+
+        throw 'Unexpected outcome file character';
+    }
+
+    protected parseStrategyText(strategyTextLine: string): void {
         if (strategyTextLine.length !== 3) {
             throw 'Text line not long enough';
         }
@@ -42,7 +57,7 @@ export default class StrategyGuideParser {
         }        
         const rhs = strategyTextLine.at(2)!;
 
-        this.guide.addStrategy(StrategyGuideParser.getChoice(lhs), StrategyGuideParser.getChoice(rhs));
+        this.guide.addStrategy(this.getChoice(lhs), this.getChoice(rhs));
     }
 
     public parse(textLines: Array<string>): number {

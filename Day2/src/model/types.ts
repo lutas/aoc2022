@@ -5,6 +5,12 @@ export enum RPS {
     Scissors = 3
 };
 
+export enum ExpectedOutcome {
+    YouLose,
+    Draw,
+    YouWin
+};
+
 export type Strategy = {
     opponent: RPS;
     you: RPS;
