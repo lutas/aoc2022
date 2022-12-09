@@ -28,7 +28,7 @@ int main()
 
 	f.close();
 
-	moveHandler.Apply(crateStacks);
+	moveHandler.ApplyDay2(crateStacks);
 
 	std::cout << "Top answer was " << crateStacks.GetTopAnswer() << std::endl;
 }

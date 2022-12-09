@@ -22,8 +22,12 @@ namespace TestData {
 		return lines;
 	}
 
-	inline std::string GetTestExpectedAnswer() {
+	inline std::string GetTestExpectedAnswerDay1() {
 		return "CMZ";
+	}
+
+	inline std::string GetTestExpectedAnswerDay2() {
+		return "MCD";
 	}
 
 }

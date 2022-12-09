@@ -14,7 +14,7 @@ namespace Tests
 	{
 	public:
 
-		TEST_METHOD(GivesExpectedAnswer)
+		TEST_METHOD(GivesExpectedAnswerDay1)
 		{
 			CrateStacks stacks;
 			MoveHandler moveHandler;
@@ -30,7 +30,26 @@ namespace Tests
 
 			std::string answer = stacks.GetTopAnswer();
 
-			Assert::AreEqual(TestData::GetTestExpectedAnswer(), answer);
+			Assert::AreEqual(TestData::GetTestExpectedAnswerDay1(), answer);
+		}
+
+		TEST_METHOD(GivesExpectedAnswerDay2)
+		{
+			CrateStacks stacks;
+			MoveHandler moveHandler;
+			InputParser parser(stacks, moveHandler);
+
+			auto lines = TestData::GetTestLineData();
+
+			for (auto iter = lines.begin(); iter != lines.end(); ++iter) {
+				parser.ParseTextLine(*iter);
+			}
+
+			moveHandler.ApplyDay2(stacks);
+
+			std::string answer = stacks.GetTopAnswer();
+
+			Assert::AreEqual(TestData::GetTestExpectedAnswerDay2(), answer);
 		}
 
 	};

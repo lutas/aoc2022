@@ -23,3 +23,18 @@ void MoveHandler::Apply(CrateStacks& stacks)
 	}
 }
 
+void MoveHandler::ApplyDay2(CrateStacks& stacks)
+{
+	while (_moves.size()) {
+
+		const Move move = _moves.front();
+
+		if (!stacks.MoveMultipleCrates(move.fromColumn, move.toColumn, move.numCrates))
+		{
+			throw std::invalid_argument("Attempted to move a crate that doesn't exist");
+		}
+
+		_moves.pop();
+	}
+}
+

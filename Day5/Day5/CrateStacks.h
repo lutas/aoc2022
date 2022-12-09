@@ -17,7 +17,8 @@ public:
 	void AddCrate(int stack, char crate);
 	int GetCrateCount(int index) const;
 
-	bool MoveCrate(int stackFrom, int stackTo);
+	bool MoveCrate(int stackFrom, int stackTo); 
+	bool MoveMultipleCrates(int stackFromId, int stackToId, int numCrates);
 
 	std::string GetTopAnswer() const;
 
