@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <assert.h>
 
-#define NUM_DIFFERENT_CHARS 4
+#define NUM_DIFFERENT_CHARS 14
 
 bool isUnique(const char* chars, int num) {
     for (int x = 0; x < num; ++x) {
@@ -61,9 +61,30 @@ void day1Tests() {
 }
 
 
+void day2Tests() {
+
+    int answers[] = { 
+        getNonRepeatingSequenceIndex("mjqjpqmgbljsphdztnvjfqwrcgsmlb"),
+        getNonRepeatingSequenceIndex("bvwbjplbgvbhsrlpgdmjqwftvncz"),
+        getNonRepeatingSequenceIndex("nppdvjthqldpwncqszvftbrmjlhg"),
+        getNonRepeatingSequenceIndex("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg"),
+        getNonRepeatingSequenceIndex("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw")
+    };
+
+    int expectedAnswers[] = { 19, 23, 23, 29, 26 };
+
+    for (int i = 0; i < 5; ++i) {
+        char result[16];
+        sprintf(result, "Answer %d: %d\n", (i + 1), answers[i]);
+        printf(result);
+
+        assert(answers[i] == expectedAnswers[i]);
+    }
+}
+
 int main() {
 
-    day1Tests();
+    day2Tests();
 
     FILE* file = fopen("input.txt", "r");
     // file size
