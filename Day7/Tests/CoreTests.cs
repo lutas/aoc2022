@@ -54,4 +54,20 @@ public class CoreTests
 
         totalSize.ShouldBe(95437);
     }
+
+    [Fact]
+    public void Can_Calculate_Smallest_Directory_Size_To_Free_Space()
+    {
+        var fileSystem = new VirtualFileSystem();
+        var commands = new Command.Parser(fileSystem);
+        commands.Parse(ExampleData);
+
+        const int RequiredSpace = 30000000;
+
+        var directoryToDelete = fileSystem.WhichDirectoryToFreeUp(RequiredSpace);
+        var directoryToDeleteSize = directoryToDelete.CalculateTotalSize();
+
+        directoryToDelete.Name.ShouldBe("d");
+        directoryToDeleteSize.ShouldBe(24933642);
+    }
 }

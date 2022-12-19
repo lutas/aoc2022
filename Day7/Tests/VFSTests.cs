@@ -2,6 +2,7 @@ namespace Tests;
 
 using VFS;
 
+
 public class VFSTests
 {
 
@@ -76,4 +77,18 @@ public class VFSTests
 
         fileSystem.Cwd.Name.ShouldBe("Test");
     }
+
+    [Fact]
+    public void Can_Calculate_Free_Disk_Space()
+    {
+        var fileSystem = new VirtualFileSystem(1000);
+        var dir = fileSystem.Root.AddDirectory("Test");
+        dir.AddFile("File1", 100);
+        dir.AddFile("File2", 150);
+
+        int freeDiskSpace = fileSystem.CalculateFreeDiskSpace();
+
+        freeDiskSpace.ShouldBe(750);
+    }
+
 }

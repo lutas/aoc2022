@@ -2,15 +2,22 @@ namespace VFS;
 
 public class VirtualFileSystem : IVirtualObject {
 
+    const int DefaultDiskSpace = 70000000;
+
     public VirtualDirectory Cwd { get; private set; }
     public VirtualDirectory Root { get; private set; }
 
+    private readonly int _totalDiskSpace;
+
     public string Name => ((IVirtualObject)Root).Name;
 
-    public VirtualFileSystem()
+    public VirtualFileSystem() : this(DefaultDiskSpace) {}
+
+    public VirtualFileSystem(int totalDiskSpace)
     {
         Root = new VirtualDirectory("/");
         Cwd = Root;
+        _totalDiskSpace = totalDiskSpace;
     }
 
     public bool CD(string path)
@@ -40,6 +47,14 @@ public class VirtualFileSystem : IVirtualObject {
     public int CalculateTotalSize()
     {
         return ((IVirtualObject)Root).CalculateTotalSize();
+    }
+
+    public int CalculateFreeDiskSpace()
+    {
+        int usedSpace = CalculateTotalSize();
+        int freeDiskSpace = _totalDiskSpace - usedSpace;
+
+        return freeDiskSpace;
     }
 
     public int CalculateTotalSizeLimit(int maxSize)
@@ -82,5 +97,26 @@ public class VirtualFileSystem : IVirtualObject {
                 }
             }
         }
+    }
+
+    public VirtualDirectory WhichDirectoryToFreeUp(int requiredSpace)
+    {
+        int minDataSizeToDelete = requiredSpace - CalculateFreeDiskSpace();
+
+        var directory = GetAllDirectories()
+            .Select(dir => {
+                int fileSize = dir.CalculateTotalSize();
+
+                return new {
+                    dir,
+                    fileSize
+                };
+            })
+            .Where(d => d.fileSize >= minDataSizeToDelete)
+            .OrderBy(d => d.fileSize)
+            .First()
+            .dir;
+
+        return directory;
     }
 }
